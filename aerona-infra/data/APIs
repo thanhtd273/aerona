@@ -1,0 +1,22 @@
+# user service
+GET_USER_INFO=/api/v1/users/:userId
+# flight-search-service
+RECENT_SEARCH=GET /api/v1/flights/recent/:userId
+DELETE_RECENT_SEARCH=DELETE /api/v1/flights/recent/:userId
+SUGGEST_FLIGHTS=GET /api/v1/flights/suggested # 4 popular airports and 4 popular cities
+SUGGEST_AIRPORTs=GET /api/v1/airports/suggested # Suggest list of airports when user is typing.
+INCREASE_POPULATION=GET /api/v1/flights/:flightId/increase-population
+SEARCH_FLIGHT=GET /api/v1/flights/search?from=airportId&to=airportId&num_of_passengers=1
+AVAILABLE_AIRPORTS=GET /api/v1/flights/:flightId/airports
+FILTER_FLIGHT=GET /api/v1/flights?...
+FLIGHT_FOR_TICKET=GET /internal/flights/data-for-ticket/:flightId
+
+# booking-service
+BOOKING_FOR_TICKET=/internal/bookings/data-for-ticket/:bookingId
+
+# payment-service
+
+# ticket-service
+
+# notification-service
+

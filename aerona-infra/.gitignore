@@ -1,0 +1,32 @@
+# Terraform state files
+terraform.tfstate
+terraform.tfstate.backup
+
+# Terraform lock file (optional, depending on your workflow)
+#.terraform.lock.hcl
+
+# Terraform plugin/module directory
+.terraform/
+.terraform/*
+
+# Sensitive variable files
+terraform.tfvars
+*.tfvars
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Local environment files
+.env
+*.local
+
+# Terraform plan files
+*.plan
+
+# Miscellaneous
+*.log
+*.bak
+*.backup
+*.swp
+*.swo

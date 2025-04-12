@@ -1,0 +1,5 @@
+*.pdf
+*.log
+*.vscode
+*.json
+*.env

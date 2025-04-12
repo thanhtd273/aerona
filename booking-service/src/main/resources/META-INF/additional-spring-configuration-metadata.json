@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "booking-service.api.location.log.dir",
+      "type": "java.lang.String",
+      "description": "Directory contains log file"
+    },
+    {
+      "name": "flight.api.base-url",
+      "type": "java.lang.String",
+      "description": "Flight APIs endpoint"
+    }
+  ]
+}

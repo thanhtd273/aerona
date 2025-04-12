@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: aerona
+
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: aerona-quota
+  namespace: aerona
+spec:
+  hard:
+    requests.cpu: "2"
+    requests.memory: "2Gi"
+    limits.cpu: "5"
+    limits.memory: "5Gi"

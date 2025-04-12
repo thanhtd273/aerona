@@ -1,0 +1,10 @@
+*.env
+log
+*.log
+logs
+dist
+temp
+**test**
+
+*.pdf
+.vscode

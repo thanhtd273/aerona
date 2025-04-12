@@ -1,0 +1,357 @@
+services:
+  airline-service:
+    container_name: airline-service
+    build:
+      context: ./airline-integration-service
+      dockerfile: Dockerfile
+    image: aerona/airline-service:1.0.0
+    environment:
+      - PORT=8081
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - LOG_LEVEL=debug
+      - LOG_PATH=./logs/app.log
+    ports:
+      - "8081:8081"
+    networks:
+      - app-net
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  flight-service:
+    container_name: flight-service
+    build:
+      context: ./flight-search-service
+      dockerfile: Dockerfile
+    image: aerona/flight-service:1.0.0
+    environment:
+      - PORT=8082
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - LOG_LEVEL=debug
+      - LOG_PATH=./logs/app.log
+    ports:
+      - "8082:8082"
+    networks:
+      - app-net
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  ticket-service:
+    container_name: ticket-service
+    build:
+      context: ./ticket-service
+      dockerfile: Dockerfile
+    image: aerona/ticket-service:1.0.0
+    environment:
+      - PORT=8083
+      - MONGO_HOST=ticketdb:27017
+      - MONGO_USERNAME=admin
+      - LOG_PATH=./logs/app.log
+      - LOG_LEVEL=debug
+      - MONGO_PASSWORD=123456
+      - AWS_REGION_ID=ap-southeast-1
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - S3_BUCKET_NAME=awsaeronabucket
+      - REDIS_ADDR=redisdb:6379
+      - REDIS_PASSWORD=123456
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+    ports:
+      - "8083:8083"
+    networks:
+      - app-net
+    depends_on:
+      ticketdb:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      redisdb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  notification-service:
+    container_name: notification-service
+    build:
+      context: ./notification-service
+      dockerfile: Dockerfile
+    image: aerona/notification-service:1.0.0
+    ports:
+      - "8084:8084"
+    environment:
+      - PORT=8084
+      - MONGO_HOST=ticketdb:27017
+      - MONGO_USERNAME=admin
+      - MONGO_PASSWORD=123456
+      - LOG_PATH=./logs/app.log
+      - LOG_LEVEL=debug
+      - EMAIL_HOST=smtp.gmail.com
+      - EMAIL_PORT=587
+      - EMAIL_USERNAME=hinhtudien@gmail.com
+      - EMAIL_PASSWORD=iizzsrzhgsfipjog
+      - EMAIL_FROM=hinhtudien@gmail.com
+      - S3_BUCKET_NAME=awsaeronabucket
+      - REDIS_ADDR=redisdb:6379
+      - REDIS_PASSWORD=123456
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+    networks:
+      - app-net
+    depends_on:
+      ticketdb:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      redisdb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8084/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  booking-service:
+    container_name: booking-service
+    environment:
+      - PORT=8085
+      - POSTGRES_HOST=bookingdb
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=bookingdb
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=123456
+      - FLIGHT_API_BASE_URL=http://flight-service:8082/api/v1
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    build:
+      context: ./booking-service
+      dockerfile: Dockerfile
+    image: aerona/booking-service:1.0.0
+    ports:
+      - "8085:8085"
+    networks:
+      - app-net
+    depends_on:
+      bookingdb:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      flight-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8085/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  payment-service:
+    container_name: payment-service
+    environment:
+      - PORT=8086
+      - POSTGRES_HOST=paymentdb
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=paymentdb
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=123456
+      - PAYPAL_BASE_URL=https://api-m.sandbox.paypal.com
+      - REDIS_HOST=locahost
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=123456
+      - BOOKING_SERVICE_BASE_URL=http://localhost:8085
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    build:
+      context: ./payment-service
+      dockerfile: Dockerfile
+    image: aerona/payment-service:1.0.0
+    ports:
+      - "8086:8086"
+    networks:
+      - app-net
+    depends_on:
+      paymentdb:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      flight-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8085/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  elasticsearch:
+    container_name: elasticsearch
+    image: elasticsearch:8.17.3
+    environment:
+      - xpack.security.enabled=false
+      - ELASTIC_PASSWORD=123456
+      - "discovery.type=single-node"
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g
+    ports:
+      - "9200:9200"
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+    networks:
+      - app-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: "4g"
+        reservations:
+          cpus: "0.5"
+          memory: "1g"
+  kafka:
+    image: apache/kafka:3.7.0
+    hostname: kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_NODE_ID: 1
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:29093
+      KAFKA_LISTENERS: PLAINTEXT://kafka:29092,CONTROLLER://kafka:29093,PLAINTEXT_HOST://0.0.0.0:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      CLUSTER_ID: X7k9P2mZQ6i8j4vL5nRw1A
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "2g"
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-net
+  ticketdb:
+    image: mongo:7
+    container_name: ticketdb
+    ports:
+      - 27017:27017
+    volumes:
+      - ticket_data:/data/db
+    networks:
+      - app-net
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=123456
+      - MONGO_INITDB_DATABASE=ticketdb
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mongosh",
+          "--host",
+          "localhost",
+          "--port",
+          "27017",
+          "--username",
+          "admin",
+          "--password",
+          "123456",
+          "--eval",
+          "db.runCommand({ping:1})",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+  bookingdb:
+    image: postgres
+    container_name: bookingdb
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASS:-123456}
+      - POSTGRES_DB=bookingdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - booking_data:/var/lib/postgresql/data
+    networks:
+      - app-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+  paymentdb:
+    image: postgres
+    container_name: paymentdb
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASS:-123456}
+      - POSTGRES_DB=paymentdb
+    ports:
+      - "5433:5432"
+    volumes:
+      - payment_data:/var/lib/postgresql/data
+    networks:
+      - app-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+  redisdb:
+    image: redis:7.2
+    container_name: redisdb
+    ports:
+      - "6379:6379"
+    # environment:
+    #   - REDIS_PASSWORD=123456
+    command: redis-server --requirepass 123456
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "512m"
+    networks:
+      - app-net
+volumes:
+  es-data:
+    driver: local
+  ticket_data:
+    driver: local
+  booking_data:
+    driver: local
+  payment_data:
+    driver: local
+  redis_data:
+    driver: local
+  kafka_data:
+    driver: local
+networks:
+  app-net:
+    driver: bridge

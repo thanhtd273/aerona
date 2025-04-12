@@ -1,0 +1,25 @@
+image: docker:20.10.16
+services:
+  - docker:20.10.16-dind
+
+variables:
+  DOCKER_DRIVER: overlay
+  KUBE_NAMESPACE: aerona
+  IMAGE_NAME: airline-integration-service
+
+stages:
+  # - test
+  # - code quality
+  - build
+  - deploy
+
+Build Image:
+  stage: build
+  variables:
+    CONTAINER_IMAGE: $CI_REGISTRY/aerona/airline-integration-service:1.0.0
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
+    - docker build -t $CONTAINER_IMAGE .
+    - docker push $CONTAINER_IMAGE
+  only:
+    - main

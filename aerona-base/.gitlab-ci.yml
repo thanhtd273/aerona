@@ -1,0 +1,33 @@
+default:
+  image: maven:3.9.6-eclipse-temurin-17
+  cache:
+    paths:
+      - .m2/repository
+variables:
+  MAVEN_CLI_OPTS: "-s settings.xml --batch-mode"
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+stages:
+  - build
+  - test
+  - publish
+
+build:
+  stage: build
+  script:
+    - mvn $MAVEN_CLI_OPTS compile
+  artifacts:
+    paths:
+      - target/*.jar
+    expire_in: 1 week
+
+test:
+  stage: test
+  script:
+    - mvn $MAVEN_CLI_OPTS test
+
+publish:
+  stage: publish
+  script:
+    - mvn $MAVEN_CLI_OPTS deploy || exit 1
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"

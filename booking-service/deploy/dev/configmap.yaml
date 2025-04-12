@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: booking-service-env
+  labels: &DeploymentLabels
+    app: booking-service
+    service: booking-service
+data:
+  key: value

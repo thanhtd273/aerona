@@ -1,0 +1,8 @@
+elasticsearch:
+  addresses:
+    - "https://my-elasticsearch-project-ed0559.es.ap-southeast-1.aws.elastic.cloud:443"
+server:
+  port: "8083"
+log:
+  path: "./logs/app.log"
+  level: "debug"

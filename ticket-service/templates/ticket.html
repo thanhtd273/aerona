@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-Ticket Vietravel Airlines</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      .e-ticket-container {
+        width: 1200px;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #00a8e8;
+        padding-bottom: 10px;
+      }
+
+      .logo img {
+        height: 50px;
+      }
+
+      .title {
+        text-align: center;
+        color: #333;
+      }
+
+      .title h1 {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .title h2 {
+        font-size: 18px;
+        font-weight: 400;
+        color: #666;
+        margin: 5px 0 0;
+      }
+
+      .traveloka-logo img {
+        height: 40px;
+      }
+
+      .flight-details {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .date-time p {
+        font-size: 16px;
+        color: #555;
+        margin: 0 0 10px;
+      }
+
+      .route {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .departure,
+      .arrival {
+        text-align: center;
+      }
+
+      .time {
+        font-size: 24px;
+        font-weight: 700;
+        color: #00a8e8;
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .location {
+        font-size: 14px;
+        color: #666;
+      }
+
+      .duration {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .duration span {
+        font-size: 16px;
+        color: #333;
+      }
+
+      .line {
+        width: 2px;
+        height: 50px;
+        background-color: #ccc;
+        margin: 5px 0;
+      }
+
+      .booking-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid #eee;
+      }
+
+      .info-item {
+        font-size: 14px;
+        color: #333;
+      }
+
+      .info-item span:first-child {
+        font-weight: 700;
+        color: #555;
+      }
+
+      .refundable span:last-child {
+        color: #e74c3c;
+        font-weight: 700;
+      }
+
+      .actions {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+
+      .action-btn {
+        background-color: #00a8e8;
+        color: #fff;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-size: 12px;
+        cursor: pointer;
+        text-align: center;
+        width: 32%;
+        transition: background-color 0.3s;
+      }
+
+      .action-btn:hover {
+        background-color: #0097d9;
+      }
+
+      .action-btn i {
+        margin-bottom: 5px;
+        font-size: 16px;
+      }
+
+      .passenger-details {
+        border-top: 2px solid #00a8e8;
+        padding-top: 20px;
+      }
+
+      .passenger-details h3 {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f2f2f2;
+        font-weight: 700;
+        color: #555;
+      }
+
+      .facilities p {
+        margin: 5px 0;
+        color: #666;
+      }
+
+      .facilities i {
+        margin-right: 5px;
+        color: #00a8e8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="e-ticket-container">
+      <!-- Header -->
+      <div class="header">
+        <div class="logo">
+          <img
+            src="https://hophilong.vn/wp-content/uploads/2022/03/Vietravel-Airlines.png"
+            alt="Vietravel Airlines Logo"
+          />
+        </div>
+        <div class="title">
+          <h1>E-ticket</h1>
+          <h2>Departure Flight</h2>
+        </div>
+        <div class="traveloka-logo">
+          <img
+            src="https://brandlogos.net/wp-content/uploads/2022/10/traveloka-logo_brandlogos.net_gdkey.png"
+            alt="Traveloka Logo"
+          />
+        </div>
+      </div>
+
+      <!-- Flight Details -->
+      <div class="flight-details">
+        <div class="date-time">
+          <p>{{.DateTime}}</p>
+        </div>
+        <div class="route">
+          <div class="departure">
+            <span class="time">{{.DepartureTime}}</span>
+            <span class="location"
+              >{{.DepartureCity}} ({{.DepartureCode}})<br />{{.DepartureAirport}}</span
+            >
+          </div>
+          <div class="duration">
+            <span>{{.Duration}}</span>
+            <div class="line"></div>
+            <span>{{.ArrivalDate}}</span>
+          </div>
+          <div class="arrival">
+            <span class="time">{{.ArrivalTime}}</span>
+            <span class="location"
+              >{{.ArrivalCity}} ({{.ArrivalCode}})<br />{{.ArrivalAirport}}</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Booking Info -->
+      <div class="booking-info">
+        <div class="info-item">
+          <span>Traveloka Booking ID</span>
+          <span>{{.BookingID}}</span>
+        </div>
+        <div class="info-item">
+          <span>Airline Booking Code (PNR)</span>
+          <span>{{.PNR}}</span>
+        </div>
+        <div class="info-item refundable">
+          <span>Refundable</span>
+          <span>{{.Refundable}}</span>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions">
+        <button class="action-btn">
+          <i class="fas fa-check"></i> Present ID/passport has been checked
+          <br />when checking in
+        </button>
+        <button class="action-btn">
+          <i class="fas fa-clock"></i> Check-in at the counter 80 minutes before
+          departure <br />before departure
+        </button>
+        <button class="action-btn">
+          <i class="fas fa-info-circle"></i>Introduction to children about the
+          wind <br />at Da Nang airport
+        </button>
+      </div>
+
+      <!-- Passenger Details -->
+      <div class="passenger-details">
+        <h3>Passenger Details</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>No. Passenger(s)</th>
+              <th>Route</th>
+              <th>Flight Facilities</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{range .Passengers}}
+            <tr>
+              <td>
+                <span>{{.Title}} {{.FullName}}<br />({{.Type}})</span>
+              </td>
+              <td>{{.Route}}</td>
+              <td>
+                <div class="facilities">
+                  <p><i class="fas fa-suitcase"></i> {{.HandLuggage}}</p>
+                  <p><i class="fas fa-box"></i> {{.CheckedLuggage}}</p>
+                  <p><i class="fas fa-weight"></i> {{.TotalWeight}}</p>
+                </div>
+              </td>
+            </tr>
+            {{end}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

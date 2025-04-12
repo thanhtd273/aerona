@@ -1,0 +1,27 @@
+{
+  "settings": {
+    "number_of_shards": 5,
+    "number_of_replicas": 2
+  },
+  "mappings": {
+    "properties": {
+      "search_id": { "type": "keyword" },
+      "brower_id": { "type": "keyword" },
+      "search_code": { "type": "keyword" },
+      "departure": {
+        "properties": {
+          "airport_code": { "type": "keyword" },
+          "city": { "type": "keyword" }
+        }
+      },
+      "arrival": {
+        "properties": {
+          "airport_code": { "type": "keyword" },
+          "city": { "type": "keyword" }
+        }
+      },
+      "departue_date": { "type": "date" },
+      "searched_at": { "type": "date" }
+    }
+  }
+}

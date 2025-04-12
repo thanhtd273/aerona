@@ -1,0 +1,53 @@
+image: docker:20.10.16
+services:
+  - docker:20.10.16-dind
+
+variables:
+  DOCKER_DRIVER: overlay
+  KUBE_NAMESPACE: aerona
+
+stages:
+  # - test
+  # - code quality
+  - build
+  - deploy
+
+# Unit Tests:
+#   extends: .test
+#   image: maven:3.9.6-eclipse-temurin-17
+#   variables:
+#     MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
+#   script:
+#     - mvn -s $MAVEN_SETTINGS_XML $MAVEN_CLI_OPTS test
+#   only:
+#     - main
+
+# Code Quality:
+#   extends: .sonar-scanner-mvn
+#   image: maven:3.9.6-eclipse-temurin-17
+#   only:
+#     - main
+
+Build Image:
+  stage: build
+  variables:
+    IMAGE_NAME: $CI_REGISTRY/aerona/payment-service:1.0.0
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
+    - docker build -t $IMAGE_NAME .
+    - docker push $IMAGE_NAME
+  only:
+    - main
+# Deploy to K8S:
+#   image: google/cloud-sdk
+#   stage: deploy
+#   script:
+#     - echo "$GOOGLE_KEY" > key.json
+#     - gcloud auth activate-service-account --key-file key.json
+#     - gcloud config set compute/zone europe-west1-c
+#     - gcloud config set project aerona/payment-service:1.0.0
+#     - gcloud config set container/use_client_certificate True
+#     - gcloud container clusters get-credentials actuator-example
+#     - kubectl delete secret registry.gitlab.com
+#     - kubectl create secret docker-registry registry.gitlab.com --docker-server=https://registry.gitlab.com --docker-username=trinhdinhthanh --docker-password=$REGISTRY_PASSWD --docker-email=hinhtudien@gmail.com
+#     - kubectl apply -f deploy/deployment.yml

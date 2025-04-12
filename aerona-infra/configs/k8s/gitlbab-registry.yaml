@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gitlab-registry-key
+  namespace: aerona
+data:
+  .dockerconfigjson: ZEdoaGJtaDBaREkzTXpwbmJIQmhkQzB5ZVdaVlZ6bFFXa3hTWWtkeWNGVndaakkzYVE9PQo=
+type: kubernetes.io/dockerconfigjson

@@ -1,0 +1,122 @@
+[
+  {
+    "id": "2770001",
+    "gmt": "7",
+    "city_id": "1",
+    "iata_code": "HAN",
+    "country_iso2": "VN",
+    "geoname_id": "1581130",
+    "latitude": "21.221222",
+    "longitude": "105.806667",
+    "city_name": "Ha Noi",
+    "timezone": "Asia/Ho_Chi_Minh"
+  },
+  {
+    "id": "2770002",
+    "gmt": "7",
+    "city_id": "2",
+    "iata_code": "SGN",
+    "country_iso2": "VN",
+    "geoname_id": "1566083",
+    "latitude": "10.818889",
+    "longitude": "106.651944",
+    "city_name": "Ho Chi Minh",
+    "timezone": "Asia/Ho_Chi_Minh"
+  },
+  {
+    "id": "2770003",
+    "gmt": "7",
+    "city_id": "3",
+    "iata_code": "DAD",
+    "country_iso2": "VN",
+    "geoname_id": "1583992",
+    "latitude": "16.043889",
+    "longitude": "108.199722",
+    "city_name": "Da Nang",
+    "timezone": "Asia/Ho_Chi_Minh"
+  },
+  {
+    "id": "2770004",
+    "gmt": "7",
+    "city_id": "4",
+    "iata_code": "CXR",
+    "country_iso2": "VN",
+    "geoname_id": "1572151",
+    "latitude": "12.2275",
+    "longitude": "109.192222",
+    "city_name": "Nha Trang",
+    "timezone": "Asia/Ho_Chi_Minh"
+  },
+  {
+    "id": "2770005",
+    "gmt": "7",
+    "city_id": "5",
+    "iata_code": "HUI",
+    "country_iso2": "VN",
+    "geoname_id": "1580240",
+    "latitude": "16.4015",
+    "longitude": "107.7025",
+    "city_name": "Hue",
+    "timezone": "Asia/Ho_Chi_Minh"
+  },
+  {
+    "id": "2770006",
+    "gmt": "7",
+    "city_id": "6",
+    "iata_code": "PQC",
+    "country_iso2": "VN",
+    "geoname_id": "1569970",
+    "latitude": "10.227",
+    "longitude": "103.961",
+    "city_name": "Phu Quoc",
+    "timezone": "Asia/Ho_Chi_Minh"
+  },
+  {
+    "id": "2770007",
+    "gmt": "7",
+    "city_id": "7",
+    "iata_code": "VII",
+    "country_iso2": "VN",
+    "geoname_id": "1562798",
+    "latitude": "18.7376",
+    "longitude": "105.6706",
+    "city_name": "Vinh",
+    "timezone": "Asia/Ho_Chi_Minh"
+  },
+  {
+    "id": "2770008",
+    "gmt": "7",
+    "city_id": "8",
+    "iata_code": "VCA",
+    "country_iso2": "VN",
+    "geoname_id": "1586203",
+    "latitude": "10.0851",
+    "longitude": "105.7119",
+    "city_name": "Can Tho",
+    "timezone": "Asia/Ho_Chi_Minh"
+  },
+  {
+    "id": "2770009",
+    "gmt": "7",
+    "city_id": "9",
+    "iata_code": "THD",
+    "country_iso2": "VN",
+    "geoname_id": "1566166",
+    "latitude": "19.901111",
+    "longitude": "105.468333",
+    "city_name": "Thanh Hoa",
+    "timezone": "Asia/Ho_Chi_Minh"
+  },
+  {
+    "id": "2770010",
+    "gmt": "7",
+    "city_id": "10",
+    "iata_code": "BMV",
+    "country_iso2": "VN",
+    "geoname_id": "1586896",
+    "latitude": "12.6683",
+    "longitude": "108.1203",
+    "city_name": "Buon Ma Thuot",
+    "timezone": "Asia/Ho_Chi_Minh"
+  }
+]

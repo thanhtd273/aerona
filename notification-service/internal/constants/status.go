@@ -1,0 +1,7 @@
+package constants
+
+const (
+	NOTIFIED = "NOTIFIED"
+
+	NOTIFICATION_FAILED = "NOTIFICATION_FAILED"
+)

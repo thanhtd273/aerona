@@ -1,0 +1,50 @@
+{
+  "settings": {
+    "number_of_shards": 5,
+    "number_of_replicas": 1
+  },
+  "mappings": {
+    "properties": {
+      "flight_id": { "type": "keyword" },
+      "flight_number": { "type": "keyword" },
+      "departure": {
+        "properties": {
+          "airport_name": { "type": "keyword" },
+          "airport_code": { "type": "keyword" },
+          "city": { "type": "keyword" },
+          "country": { "type": "keyword" },
+          "scheduled": { "type": "date" }
+        }
+      },
+      "arrival": {
+        "properties": {
+          "airport_name": { "type": "keyword" },
+          "airport_code": { "type": "keyword" },
+          "city": { "type": "keyword" },
+          "country": { "type": "keyword" },
+          "scheduled": { "type": "date" }
+        }
+      },
+      "duration": { "type": "integer" },
+      "price": { "type": "integer" },
+      "currency": { "type": "keyword" },
+      "airline": { "type": "keyword" },
+      "seats_available": { "type": "integer" },
+      "stops": { "type": "integer" },
+      "stop_details": {
+        "type": "nested",
+        "properties": {
+          "stop_id": { "type": "keyword" },
+          "airport_code": { "type": "keyword" },
+          "depature_time": { "type": "date" },
+          "arrival_time": { "type": "date" }
+        }
+      },
+      "airplane_type": { "type": "keyword" },
+      "flight_date": { "type": "date" },
+      "created_at": { "type": "date" },
+      "updated_at": { "type": "date" },
+      "status": { "type": "keyword" }
+    }
+  }
+}

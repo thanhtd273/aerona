@@ -1,0 +1,18 @@
+{
+  "settings": {
+    "number_of_shards": 5,
+    "number_of_replicas": 2
+  },
+  "mappings": {
+    "properties": {
+      "city_id": { "type": "keyword" },
+      "name": { "type": "text" },
+      "code": { "type": "keyword" },
+      "country_name": { "type": "keyword" },
+      "popularity": { "type": "long" },
+      "created_at": { "type": "date" },
+      "updated_at": { "type": "date" },
+      "status": { "type": "keyword" }
+    }
+  }
+}
